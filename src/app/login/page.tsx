@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import axios from 'axios';
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -15,9 +16,11 @@ export default function LoginPage() {
         try{
             const response = await axios.post("/api/users/login", user);
             console.log("Login Success", response.data);
+            toast.success("Login successfully")
             router.push("/profile");
         } catch(error: any){
-            console.log("Login Failed", error.message);
+            console.log("Login Failed", error?.message );
+            toast.error(error?.response?.data?.error || "Something went wrong")
         } finally{
     
         }
@@ -33,7 +36,7 @@ export default function LoginPage() {
             <hr/>
             <div className="flex flex-col pt-2 w-[30%]">
             <label htmlFor="email">Email</label>
-            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
+            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
                 id="email"
                 type="text"
                 value={user.email}
@@ -41,7 +44,7 @@ export default function LoginPage() {
                 placeholder="Email"
             />
             <label htmlFor="password">Password</label>
-            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
+            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
                 id="password"
                 type="password"
                 value={user.password}
